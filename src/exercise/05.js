@@ -6,12 +6,17 @@ import {Switch} from '../switch'
 
 const callAll = (...fns) => (...args) => fns.forEach(fn => fn?.(...args))
 
+const ACTIONTYPES = {
+  TOGGLE: 'toggle',
+  RESET: 'reset'
+}
+
 function toggleReducer(state, {type, initialState}) {
   switch (type) {
-    case 'toggle': {
+    case ACTIONTYPES.TOGGLE: {
       return {on: !state.on}
     }
-    case 'reset': {
+    case ACTIONTYPES.RESET: {
       return initialState
     }
     default: {
@@ -56,14 +61,14 @@ function useToggle({initialOn = false, reducer = toggleReducer()} = {}) {
   }
 }
 
-// export {useToggle, toggleReducer}
+// export {useToggle, toggleReducer, ACTIONTYPES}
 
 function App() {
   const [timesClicked, setTimesClicked] = React.useState(0)
   const clickedTooMuch = timesClicked >= 4
 
   function toggleStateReducer(state, action) {
-    if (action.type === 'toggle' && clickedTooMuch) {
+    if (action.type === ACTIONTYPES.TOGGLE && clickedTooMuch) {
       return {on: state.on}
     } else {
       return toggleReducer(state, action)
